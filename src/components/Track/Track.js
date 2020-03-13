@@ -4,8 +4,6 @@ import './Track.css';
 
 export class Track extends React.Component {
   renderAction() {
-    console.log('isRemoval');
-    console.log(this.props.isRemoval);
     if (this.props.isRemoval === true) {
       return '+';
     } else {

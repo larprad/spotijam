@@ -3,36 +3,33 @@ import './App.css';
 import { SearchBar } from '../SearchBar/SearchBar';
 import { SearchResults } from '../SearchResults/SearchResults';
 import { PlayList } from '../Playlist/Playlist';
+import { Spotify } from '../../util/Spotify';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchResults: [
-        { name: 'yt', album: 'ey', id: 2, artist: 'ey', uri: 'kghfsmpk' },
-        { name: 'yt', album: 'ey', id: 1, artist: 'ey', uri: 'jhsgpiQG' }
-      ],
+      connected: false,
+      searchResults: [],
       playListName: 'New Playlist',
       trackURIs: [],
-      playListTracks: [
-        {
-          name: 'yo',
-          album: 'ekzjghmy',
-          id: 2324,
-          artist: 'plop',
-          uri: 'kqmjhgmkjsdhgmkqhsmg'
-        }
-      ]
+      playListTracks: []
     };
     this.addTrack = this.addTrack.bind(this);
     this.removeTrack = this.removeTrack.bind(this);
     this.updatePlaylistName = this.updatePlaylistName.bind(this);
     this.savePlaylist = this.savePlaylist.bind(this);
+    this.search = this.search.bind(this);
+    this.connect = this.connect.bind(this);
   }
 
   savePlaylist() {
-    this.setState({ trackURIs: this.state.playListTracks.map(x => x.uri) });
-    console.log('URI saved');
+    this.setState(
+      {
+        trackURIs: this.state.playListTracks.map(x => x.uri)
+      },
+      () => Spotify.savePlaylist(this.state.playListName, this.state.trackURIs)
+    );
   }
 
   addTrack(track) {
@@ -58,18 +55,33 @@ class App extends React.Component {
     this.setState({ playListName: name });
   }
 
+  connect() {
+    Spotify.getAccessToken();
+    this.setState({ connected: Spotify.connected });
+  }
+
   search(item) {
+    Spotify.getAccessToken();
     console.log(`looking for ${item}`);
+    Spotify.searchTrack(item).then(x => {
+      console.log(x);
+      this.setState({ searchResults: x });
+    });
   }
 
   render() {
+    Spotify.checkToken();
     return (
       <div>
         <h1>
           Ja<span className="highlight">mmm</span>ing
         </h1>
         <div className="App">
-          <SearchBar onSearch={this.search} />
+          <SearchBar
+            onSearch={this.search}
+            onConnect={this.connect}
+            connected={Spotify.connected}
+          />
           <div className="App-playlist">
             <SearchResults
               addTrack={this.addTrack}

@@ -4,27 +4,20 @@ import './TrackList.css';
 import { Track } from '../Track/Track';
 
 export class TrackList extends React.Component {
-  shouldComponentUpdate(nextProps, nextState) {
-    if (nextProps.tracks === this.props.tracks) {
-      console.log('Tracklist should not update');
-      return false;
-    } else {
-      console.log('Tracklist should update');
-      return true;
-    }
-  }
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   if (nextProps.tracks === this.props.tracks) {
+  //     console.log('Tracklist should not update');
+  //     return false;
+  //   } else {
+  //     console.log('Tracklist should update');
+  //     return true;
+  //   }
+  // }
 
-  componentDidMount() {
-    console.log('Component did mount');
-  }
+  // componentDidMount() {}
 
   makeTrack() {
-    console.log('in makeTracks');
-    console.log('typeof tracks prop');
-    console.log(typeof this.props.tracks);
     if (this.props.tracks) {
-      console.log('tracks prop is existing, value:');
-      console.log(this.props.tracks);
       return this.props.tracks.map(x => (
         <Track
           key={x.id}
@@ -35,12 +28,10 @@ export class TrackList extends React.Component {
         />
       ));
     } else {
-      console.log('tracks prop is empty');
       return null;
     }
   }
   render() {
-    console.log('in render TrackList');
     return <div className="TrackList">{this.makeTrack()}</div>;
   }
 }

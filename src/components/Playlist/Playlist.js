@@ -6,9 +6,11 @@ export class PlayList extends React.Component {
   handleInput(e) {
     this.props.updateName(e.target.value);
   }
+
+  onSave() {
+    this.props.onSave();
+  }
   render() {
-    console.log('in Playlist');
-    console.log(this.props.playListTracks);
     return (
       <div className="Playlist">
         <input
