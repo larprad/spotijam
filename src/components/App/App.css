@@ -26,10 +26,17 @@ h2 {
   font-size: 1.55rem;
 }
 
-.App {
+.appContainer {
+  flex-direction: column;
+  display: flex;
+  justify-content: stretch;
   height: 100%;
+}
+
+.App {
+  /* height: 100%; */
   padding: 0 17% 10% 17%;
-  background-image: url('./background_photo_desktop.jpg');
+  background: rgb(146, 146, 146);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

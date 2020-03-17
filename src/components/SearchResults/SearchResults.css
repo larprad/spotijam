@@ -1,6 +1,6 @@
 .SearchResults {
   width: 50%;
-  height: 950px;
+  max-height: 950px;
   overflow-y: scroll;
   padding: 0.88rem;
   background-color: rgba(1, 12, 63, 0.7);

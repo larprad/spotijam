@@ -143,7 +143,7 @@ export const Spotify = {
         const playlistID = responseJson.id;
         console.log('playlist ID');
         console.log(playlistID);
-        const saveResponse = await fetch(
+        await fetch(
           `https://api.spotify.com/v1/playlists/${playlistID}/tracks`,
           {
             headers: {
@@ -156,8 +156,6 @@ export const Spotify = {
             body: JSON.stringify({ uris: tracksUris })
           }
         );
-        const saveResponseJson = await saveResponse.json();
-        console.log(saveResponseJson);
       } catch (err) {
         console.log(err);
       }

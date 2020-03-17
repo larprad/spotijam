@@ -72,9 +72,9 @@ class App extends React.Component {
   render() {
     Spotify.checkToken();
     return (
-      <div>
+      <div className="appContainer">
         <h1>
-          Ja<span className="highlight">mmm</span>ing
+          Ja<span className="highlight">m</span>ing
         </h1>
         <div className="App">
           <SearchBar
