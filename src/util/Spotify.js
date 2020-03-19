@@ -14,11 +14,13 @@ const authEndpoint =
   'client_id=' +
   clientId +
   '&response_type=token' +
-  '&redirect_uri=http://localhost:3000/&scope=' +
+  '&redirect_uri=http://localhost:3000&scope=' +
   scope;
 
+// http://imaginary-birth.surge.sh/&scope=
+
 export const Spotify = {
-  connected: false,
+  // connected: false,
 
   getHeader() {
     const myHeaders = new Headers();
@@ -32,24 +34,9 @@ export const Spotify = {
     return myInit;
   },
 
-  // postHeader() {
-  //   const myHeaders = new Headers();
-  //   myHeaders.append('Authorization', 'Bearer ' + accessToken);
-  //   myHeaders.append('Content-Type', 'application/json');
-  //   const myInit = {
-  //     method: 'POST',
-  //     headers: myHeaders,
-  //     mode: 'cors',
-  //     cache: 'default',
-  //     body: JSON.stringify({ name: 'hello' })
-  //   };
-  //   return myInit;
-  // },
-
   getAccessToken() {
     if (accessToken) {
       console.log('token detected');
-      this.connected = true;
       return accessToken;
     } else if (window.location.href.match(tokenReg)) {
       console.log('access token is in URL');
@@ -58,7 +45,6 @@ export const Spotify = {
       accessToken = token[1];
       window.setTimeout(() => (accessToken = ''), expirationTime * 1000);
       window.history.pushState('', null, '/');
-      this.connected = true;
       return accessToken;
     } else {
       console.log('need to get the token');
@@ -66,11 +52,11 @@ export const Spotify = {
     }
   },
 
-  checkToken() {
-    return window.location.href.match(tokenReg)
-      ? (this.connected = true)
-      : null;
-  },
+  // checkToken() {
+  //   return window.location.href.match(tokenReg)
+  //     ? (this.connected = true)
+  //     : null;
+  // },
 
   async getUserId() {
     const myInit = this.getHeader();

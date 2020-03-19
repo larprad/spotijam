@@ -1,13 +1,18 @@
 import React from 'react';
 import './SearchBar.css';
 export class SearchBar extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { input: '' };
+  }
   handleTermChange(e) {
-    this.props.onSearch(e.target.value);
+    this.setState({ input: e.target.value });
+    // this.props.onSearch(e.target.value);
   }
 
   handleClick() {
     console.log('click');
-    this.props.onConnect();
+    this.props.onSearch(this.state.input);
   }
 
   render() {
@@ -17,11 +22,8 @@ export class SearchBar extends React.Component {
           onChange={this.handleTermChange.bind(this)}
           placeholder="Enter A Song, Album, or Artist"
         />
-        <button
-          onClick={this.handleClick.bind(this)}
-          className={this.props.connected ? 'connected' : 'SearchButton'}
-        >
-          {this.props.connected ? 'connected' : 'Log in'}
+        <button onClick={this.handleClick.bind(this)} className="SearchButton">
+          Search!
         </button>
       </div>
     );

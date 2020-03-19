@@ -34,7 +34,7 @@ h2 {
 }
 
 .App {
-  /* height: 100%; */
+  height: 100%;
   padding: 0 17% 10% 17%;
   background: rgb(146, 146, 146);
   background-size: cover;
