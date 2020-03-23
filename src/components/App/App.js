@@ -9,7 +9,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      connected: false,
+      // connected: false,
       searchResults: [],
       playListName: 'New Playlist',
       trackURIs: [],
@@ -20,7 +20,29 @@ class App extends React.Component {
     this.updatePlaylistName = this.updatePlaylistName.bind(this);
     this.savePlaylist = this.savePlaylist.bind(this);
     this.search = this.search.bind(this);
-    this.connect = this.connect.bind(this);
+    // this.connect = this.connect.bind(this);
+  }
+
+  displayPlaylist() {
+    if (this.state.searchResults.length === 0) {
+      return <div className="nothingFound"></div>;
+    } else {
+      return (
+        <div className="App-playlist">
+          <SearchResults
+            addTrack={this.addTrack}
+            searchResults={this.state.searchResults}
+          />
+          <PlayList
+            onSave={this.savePlaylist}
+            updateName={this.updatePlaylistName}
+            removeTrack={this.removeTrack}
+            playListName={this.state.playListName}
+            playListTracks={this.state.playListTracks}
+          />
+        </div>
+      );
+    }
   }
 
   savePlaylist() {
@@ -55,10 +77,10 @@ class App extends React.Component {
     this.setState({ playListName: name });
   }
 
-  connect() {
-    Spotify.getAccessToken();
-    this.setState({ connected: Spotify.connected });
-  }
+  // connect() {
+  //   Spotify.getAccessToken();
+  //   this.setState({ connected: Spotify.connected });
+  // }
 
   search(item) {
     Spotify.getAccessToken();
@@ -72,30 +94,29 @@ class App extends React.Component {
   render() {
     Spotify.getAccessToken();
     return (
-      <div className="appContainer">
+      <div className="App">
         <h1>
           Spoti<span className="highlight">jam</span>
         </h1>
-        <div className="App">
-          <SearchBar
-            onSearch={this.search}
-            onConnect={this.connect}
-            connected={Spotify.connected}
+        <SearchBar
+          onSearch={this.search}
+          // onConnect={this.connect}
+          connected={Spotify.connected}
+        />
+        {this.displayPlaylist()}
+        {/* <div className="App-playlist">
+          <SearchResults
+            addTrack={this.addTrack}
+            searchResults={this.state.searchResults}
           />
-          <div className="App-playlist">
-            <SearchResults
-              addTrack={this.addTrack}
-              searchResults={this.state.searchResults}
-            />
-            <PlayList
-              onSave={this.savePlaylist}
-              updateName={this.updatePlaylistName}
-              removeTrack={this.removeTrack}
-              playListName={this.state.playListName}
-              playListTracks={this.state.playListTracks}
-            />
-          </div>
-        </div>
+          <PlayList
+            onSave={this.savePlaylist}
+            updateName={this.updatePlaylistName}
+            removeTrack={this.removeTrack}
+            playListName={this.state.playListName}
+            playListTracks={this.state.playListTracks}
+          />
+        </div> */}
       </div>
     );
   }

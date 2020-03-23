@@ -12,9 +12,11 @@ export class PlayList extends React.Component {
   }
   render() {
     return (
-      <div className="Playlist">
+      <div className="Playlist niceBox">
+        <h2 className="sectionTitle">Make your Playlist</h2>
         <input
-          defaultValue={'New Playlist'}
+          placeholder={'Enter Playlist Name'}
+          // defaultValue={'Enter Playlist Name'}
           onChange={this.handleInput.bind(this)}
         />
         <TrackList
