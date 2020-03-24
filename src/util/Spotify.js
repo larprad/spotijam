@@ -103,6 +103,20 @@ export const Spotify = {
     }
   },
 
+  async getPlaylist() {
+    const myHeader = this.getHeader();
+    try {
+      const uID = !userId ? await this.getUserId() : userId;
+      const request = `https://api.spotify.com/v1/users/${uID}/playlists`;
+      const response = await fetch(request, myHeader);
+      const responseJson = await response.json();
+      console.log(responseJson);
+      return responseJson.items;
+    } catch (e) {
+      console.error(e);
+    }
+  },
+
   async savePlaylist(playlistName, tracksUris) {
     console.log(`playlistName: ${playlistName}`);
     console.log('tracksUris');

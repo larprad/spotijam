@@ -1,0 +1,12 @@
+.YourPlaylist {
+  margin: 1rem;
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  width: 45%;
+  flex-basis: 300px;
+  max-height: 950px;
+  padding: 0.8rem;
+  background-color: rgba(1, 12, 63, 0.7);
+  flex-grow: 1;
+}

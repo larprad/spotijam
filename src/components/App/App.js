@@ -4,6 +4,7 @@ import { SearchBar } from '../SearchBar/SearchBar';
 import { SearchResults } from '../SearchResults/SearchResults';
 import { PlayList } from '../Playlist/Playlist';
 import { Spotify } from '../../util/Spotify';
+import { YourPlaylist } from '../YourPlaylist/YourPlaylist';
 
 class App extends React.Component {
   constructor(props) {
@@ -13,37 +14,37 @@ class App extends React.Component {
       searchResults: [],
       playListName: 'New Playlist',
       trackURIs: [],
-      playListTracks: []
+      playListTracks: [],
+      yourPlaylists:[],
     };
     this.addTrack = this.addTrack.bind(this);
     this.removeTrack = this.removeTrack.bind(this);
     this.updatePlaylistName = this.updatePlaylistName.bind(this);
     this.savePlaylist = this.savePlaylist.bind(this);
     this.search = this.search.bind(this);
-    // this.connect = this.connect.bind(this);
   }
 
-  displayPlaylist() {
-    if (this.state.searchResults.length === 0) {
-      return <div className="nothingFound"></div>;
-    } else {
-      return (
-        <div className="App-playlist">
-          <SearchResults
-            addTrack={this.addTrack}
-            searchResults={this.state.searchResults}
-          />
-          <PlayList
-            onSave={this.savePlaylist}
-            updateName={this.updatePlaylistName}
-            removeTrack={this.removeTrack}
-            playListName={this.state.playListName}
-            playListTracks={this.state.playListTracks}
-          />
-        </div>
-      );
-    }
-  }
+  // displayPlaylist() {
+  //   if (this.state.searchResults.length === 0) {
+  //     return <div className="nothingFound"></div>;
+  //   } else {
+  //     return (
+  //       <div className="App-playlist">
+  //         <SearchResults
+  //           addTrack={this.addTrack}
+  //           searchResults={this.state.searchResults}
+  //         />
+  //         <PlayList
+  //           onSave={this.savePlaylist}
+  //           updateName={this.updatePlaylistName}
+  //           removeTrack={this.removeTrack}
+  //           playListName={this.state.playListName}
+  //           playListTracks={this.state.playListTracks}
+  //         />
+  //       </div>
+  //     );
+  //   }
+  // }
 
   savePlaylist() {
     this.setState(
@@ -73,14 +74,18 @@ class App extends React.Component {
     this.setState({ playListTracks: tmpTrack });
   }
 
+  getPlaylist() {
+    console.log('in getPlaylist');
+    Spotify.getPlaylist().then(response => {
+      console.log(response);
+      const tmpList = response.map( x => x.name)
+      this.setState({yourPlaylists: tmpList})
+    });
+  }
+
   updatePlaylistName(name) {
     this.setState({ playListName: name });
   }
-
-  // connect() {
-  //   Spotify.getAccessToken();
-  //   this.setState({ connected: Spotify.connected });
-  // }
 
   search(item) {
     Spotify.getAccessToken();
@@ -98,25 +103,23 @@ class App extends React.Component {
         <h1>
           Spoti<span className="highlight">jam</span>
         </h1>
-        <SearchBar
-          onSearch={this.search}
-          // onConnect={this.connect}
-          connected={Spotify.connected}
-        />
-        {this.displayPlaylist()}
-        {/* <div className="App-playlist">
+        <SearchBar onSearch={this.search} connected={Spotify.connected} />
+        <div className="App-playlist">
           <SearchResults
             addTrack={this.addTrack}
             searchResults={this.state.searchResults}
           />
-          <PlayList
-            onSave={this.savePlaylist}
-            updateName={this.updatePlaylistName}
-            removeTrack={this.removeTrack}
-            playListName={this.state.playListName}
-            playListTracks={this.state.playListTracks}
-          />
-        </div> */}
+          <div className="App-playlist">
+            <PlayList
+              onSave={this.savePlaylist}
+              updateName={this.updatePlaylistName}
+              removeTrack={this.removeTrack}
+              playListName={this.state.playListName}
+              playListTracks={this.state.playListTracks}
+            />
+            <YourPlaylist />
+          </div>
+        </div>
       </div>
     );
   }
