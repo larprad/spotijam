@@ -3,7 +3,7 @@
   flex-basis: 300px;
   flex-grow: 1;
   width: 45%;
-  max-height: 950px;
+  max-height: 600px;
   overflow-y: scroll;
   padding: 0.8rem;
   background-color: rgba(1, 12, 63, 0.7);

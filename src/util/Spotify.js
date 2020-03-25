@@ -52,12 +52,6 @@ export const Spotify = {
     }
   },
 
-  // checkToken() {
-  //   return window.location.href.match(tokenReg)
-  //     ? (this.connected = true)
-  //     : null;
-  // },
-
   async getUserId() {
     const myInit = this.getHeader();
     try {
@@ -159,6 +153,25 @@ export const Spotify = {
       } catch (err) {
         console.log(err);
       }
+    }
+  },
+
+  async deletePlayList(playlistId) {
+    try {
+      const response = await fetch(
+        `https://api.spotify.com/v1/playlists/${playlistId}/followers`,
+        {
+          method: 'DELETE',
+          headers: { Authorization: 'Bearer ' + accessToken },
+          mode: 'cors',
+          cache: 'default'
+        }
+      );
+      response.ok
+        ? console.log('delete success')
+        : console.log('potato in the sauasage');
+    } catch (e) {
+      console.log(e);
     }
   }
 };

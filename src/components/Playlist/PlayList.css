@@ -13,11 +13,14 @@
 }
 
 .Playlist input {
-  width: 100%;
+  /* width: 100%; */
   border: 0;
   outline: 0;
-  background: transparent;
-  border-bottom: 1px solid #6f6f6f;
+  padding: 0 0.5rem;
+  text-align: center;
+  border-radius: 0.2rem;
+  background: rgba(0, 0, 0, 0.25);
+  /* border-bottom: 1px solid #6f6f6f; */
   font-family: 'Poppins', sans-serif;
   font-size: 2rem;
   color: #f5c63f;

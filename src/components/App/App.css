@@ -54,9 +54,10 @@ h2 {
 .App {
   height: 100vh;
   padding: 0 7%;
-  background-size: cover;
+  background-image: url(./bg.svg);
+  background-size: contain;
   background-position: center;
-  background-repeat: no-repeat;
+  background-repeat: repeat;
   font-family: 'Work Sans', sans-serif;
   font-weight: 500;
   color: #fff;

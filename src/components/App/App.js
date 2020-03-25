@@ -15,13 +15,15 @@ class App extends React.Component {
       playListName: 'New Playlist',
       trackURIs: [],
       playListTracks: [],
-      yourPlaylists:[],
+      yourPlaylists: []
     };
     this.addTrack = this.addTrack.bind(this);
     this.removeTrack = this.removeTrack.bind(this);
     this.updatePlaylistName = this.updatePlaylistName.bind(this);
     this.savePlaylist = this.savePlaylist.bind(this);
     this.search = this.search.bind(this);
+    this.deletePlaylist = this.deletePlaylist.bind(this);
+    this.getPlaylist = this.getPlaylist.bind(this);
   }
 
   // displayPlaylist() {
@@ -51,8 +53,22 @@ class App extends React.Component {
       {
         trackURIs: this.state.playListTracks.map(x => x.uri)
       },
-      () => Spotify.savePlaylist(this.state.playListName, this.state.trackURIs)
+      () => {
+        Spotify.savePlaylist(
+          this.state.playListName,
+          this.state.trackURIs
+        ).then(this.getPlaylist());
+      }
     );
+  }
+
+  deletePlaylist(playlistId) {
+    const newPlaylist = this.state.yourPlaylists.filter(
+      x => x.id !== playlistId
+    );
+    Spotify.deletePlayList(playlistId)
+      .then(this.setState({ yourPlaylists: newPlaylist }))
+      .catch(e => console.error(e));
   }
 
   addTrack(track) {
@@ -78,8 +94,7 @@ class App extends React.Component {
     console.log('in getPlaylist');
     Spotify.getPlaylist().then(response => {
       console.log(response);
-      const tmpList = response.map( x => x.name)
-      this.setState({yourPlaylists: tmpList})
+      this.setState({ yourPlaylists: response });
     });
   }
 
@@ -109,16 +124,18 @@ class App extends React.Component {
             addTrack={this.addTrack}
             searchResults={this.state.searchResults}
           />
-          <div className="App-playlist">
-            <PlayList
-              onSave={this.savePlaylist}
-              updateName={this.updatePlaylistName}
-              removeTrack={this.removeTrack}
-              playListName={this.state.playListName}
-              playListTracks={this.state.playListTracks}
-            />
-            <YourPlaylist />
-          </div>
+          <PlayList
+            onSave={this.savePlaylist}
+            updateName={this.updatePlaylistName}
+            removeTrack={this.removeTrack}
+            playListName={this.state.playListName}
+            playListTracks={this.state.playListTracks}
+          />
+          <YourPlaylist
+            getPlaylist={this.getPlaylist}
+            deletePlaylist={this.deletePlaylist}
+            playlists={this.state.yourPlaylists}
+          />
         </div>
       </div>
     );
