@@ -1,10 +1,10 @@
 .SearchResults {
-  margin: 1rem;
+  /* margin: 1rem; */
   flex-basis: 300px;
   flex-grow: 1;
-  width: 45%;
+  /* width: 45%; */
   max-height: 600px;
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
   padding: 0.8rem;
   background-color: rgba(1, 12, 63, 0.7);
 }
@@ -16,4 +16,13 @@
 ::-webkit-scrollbar {
   width: 0px;
   background: transparent;
+}
+
+.searchTitle {
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.096);
+  margin: -0.8rem;
+  margin-bottom: 0.5rem;
+  padding: 0.8rem;
+  opacity: 0.5;
 }

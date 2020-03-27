@@ -8,18 +8,25 @@ export class PlaylistChunk extends React.Component {
     this.props.deletePlaylist(this.props.id);
   }
 
+  handleEditClick() {
+    this.props.editPlaylist(this.props.id, this.props.playlist);
+  }
+
   render() {
     return (
       <div className="PlaylistChunk">
         <h2 className="PlaylistTitle">{this.props.playlist}</h2>
         <div className="buttonContainer">
           <div className="chunkButtonDiv">
-            <img src={edit} alt="edit" />
+            <img
+              src={edit}
+              alt="edit"
+              onClick={this.handleEditClick.bind(this)}
+            />
           </div>
           <div className="chunkButtonDiv">
             <img
               onClick={this.handleDeleteClick.bind(this)}
-              // className="chunkButtonDiv"
               src={delet}
               alt="delete"
             />

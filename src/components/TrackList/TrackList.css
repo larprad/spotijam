@@ -1,3 +1,8 @@
 .TrackList {
   width: 100%;
+  max-height: 500px;
+  min-height: 50px;
+  overflow-y: scroll;
+  margin-top: 0.5rem;
+  background-color: #0b1c44;
 }

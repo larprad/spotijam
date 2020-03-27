@@ -26,10 +26,10 @@ export class SearchBar extends React.Component {
       <div onKeyPress={this.handleKeyPress.bind(this)} className="SearchBar">
         <input
           onChange={this.handleTermChange.bind(this)}
-          placeholder="Enter A Song, Album, or Artist"
+          placeholder="Look for songs here!"
         />
         <button onClick={this.handleClick.bind(this)} className="SearchButton">
-          Search!
+          Search
         </button>
       </div>
     );

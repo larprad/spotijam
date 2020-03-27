@@ -6,8 +6,8 @@ import { TrackList } from '../TrackList/TrackList';
 export class SearchResults extends React.Component {
   render() {
     return (
-      <div className="SearchResults niceBox">
-        <h2 className="sectionTitle">Results</h2>
+      <div className="SearchResults">
+        <h3 className="searchTitle">Search results</h3>
         <TrackList
           addTrack={this.props.addTrack}
           tracks={this.props.searchResults}

@@ -13,6 +13,7 @@ export class YourPlaylist extends React.Component {
     return this.props.playlists.map(x => (
       <PlaylistChunk
         deletePlaylist={this.props.deletePlaylist}
+        editPlaylist={this.props.editPlaylist}
         key={x.id}
         playlist={x.name}
         id={x.id}
@@ -36,7 +37,7 @@ export class YourPlaylist extends React.Component {
           alt="loading"
         />
         <div>{this.displayList()}</div>
-        <button onClick={this.props.onSave} className="Playlist-save">
+        <button onClick={this.props.createPlaylist} className="Playlist-save">
           Create new Playlist
         </button>
       </div>

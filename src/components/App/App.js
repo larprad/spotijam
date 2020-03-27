@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
-import { SearchBar } from '../SearchBar/SearchBar';
-import { SearchResults } from '../SearchResults/SearchResults';
+// import { SearchBar } from '../SearchBar/SearchBar';
+// import { SearchResults } from '../SearchResults/SearchResults';
 import { PlayList } from '../Playlist/Playlist';
 import { Spotify } from '../../util/Spotify';
 import { YourPlaylist } from '../YourPlaylist/YourPlaylist';
@@ -10,9 +10,10 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // connected: false,
+      edit: 'none',
       searchResults: [],
-      playListName: 'New Playlist',
+      playListName: '',
+      playListId: '',
       trackURIs: [],
       playListTracks: [],
       yourPlaylists: []
@@ -24,29 +25,36 @@ class App extends React.Component {
     this.search = this.search.bind(this);
     this.deletePlaylist = this.deletePlaylist.bind(this);
     this.getPlaylist = this.getPlaylist.bind(this);
+    this.editPlaylist = this.editPlaylist.bind(this);
+    this.updatePlaylist = this.updatePlaylist.bind(this);
+    this.onExit = this.onExit.bind(this);
+    this.createPlaylist = this.createPlaylist.bind(this);
   }
 
-  // displayPlaylist() {
-  //   if (this.state.searchResults.length === 0) {
-  //     return <div className="nothingFound"></div>;
-  //   } else {
-  //     return (
-  //       <div className="App-playlist">
-  //         <SearchResults
-  //           addTrack={this.addTrack}
-  //           searchResults={this.state.searchResults}
-  //         />
-  //         <PlayList
-  //           onSave={this.savePlaylist}
-  //           updateName={this.updatePlaylistName}
-  //           removeTrack={this.removeTrack}
-  //           playListName={this.state.playListName}
-  //           playListTracks={this.state.playListTracks}
-  //         />
-  //       </div>
-  //     );
-  //   }
-  // }
+  displayPlaylist() {
+    if (this.state.edit === 'none') {
+      return null;
+    } else {
+      return (
+        <PlayList
+          onExit={this.onExit}
+          onSave={
+            this.state.edit === 'create'
+              ? this.savePlaylist
+              : this.updatePlaylist
+          }
+          updateName={this.updatePlaylistName}
+          removeTrack={this.removeTrack}
+          playListName={this.state.playListName}
+          playListTracks={this.state.playListTracks}
+          edit={this.state.edit}
+          search={this.search}
+          addTrack={this.addTrack}
+          searchResults={this.state.searchResults}
+        />
+      );
+    }
+  }
 
   savePlaylist() {
     this.setState(
@@ -58,6 +66,7 @@ class App extends React.Component {
           this.state.playListName,
           this.state.trackURIs
         ).then(this.getPlaylist());
+        this.onExit();
       }
     );
   }
@@ -69,6 +78,27 @@ class App extends React.Component {
     Spotify.deletePlayList(playlistId)
       .then(this.setState({ yourPlaylists: newPlaylist }))
       .catch(e => console.error(e));
+  }
+
+  editPlaylist(playlistId, playListName) {
+    // this.setState({ edit: true });
+    console.log('in getPlaylist');
+    console.log(playlistId);
+    Spotify.getThisPlaylist(playlistId)
+      .then(response => {
+        this.setState({
+          playListTracks: response,
+          edit: 'edit',
+          playListName: playListName,
+          playListId: playlistId
+        });
+      })
+      .catch(e => console.error('failure ' + e));
+    // this.setState({ playListName: playListName });
+  }
+
+  createPlaylist() {
+    this.setState({ edit: 'create' });
   }
 
   addTrack(track) {
@@ -98,6 +128,19 @@ class App extends React.Component {
     });
   }
 
+  updatePlaylist() {
+    console.log('UPADTE');
+    this.setState(
+      {
+        trackURIs: this.state.playListTracks.map(x => x.uri)
+      },
+      () =>
+        Spotify.editPlaylist(this.state.playListId, this.state.trackURIs).then(
+          this.onExit()
+        )
+    );
+  }
+
   updatePlaylistName(name) {
     this.setState({ playListName: name });
   }
@@ -111,6 +154,17 @@ class App extends React.Component {
     });
   }
 
+  onExit() {
+    this.setState({
+      edit: 'none',
+      playListName: '',
+      playListId: '',
+      trackURIs: [],
+      playListTracks: [],
+      searchResults: []
+    });
+  }
+
   render() {
     Spotify.getAccessToken();
     return (
@@ -118,24 +172,36 @@ class App extends React.Component {
         <h1>
           Spoti<span className="highlight">jam</span>
         </h1>
-        <SearchBar onSearch={this.search} connected={Spotify.connected} />
+        {/* <SearchBar onSearch={this.search} connected={Spotify.connected} /> */}
         <div className="App-playlist">
-          <SearchResults
-            addTrack={this.addTrack}
-            searchResults={this.state.searchResults}
-          />
-          <PlayList
-            onSave={this.savePlaylist}
-            updateName={this.updatePlaylistName}
-            removeTrack={this.removeTrack}
-            playListName={this.state.playListName}
-            playListTracks={this.state.playListTracks}
-          />
           <YourPlaylist
             getPlaylist={this.getPlaylist}
             deletePlaylist={this.deletePlaylist}
             playlists={this.state.yourPlaylists}
+            editPlaylist={this.editPlaylist}
+            createPlaylist={this.createPlaylist}
           />
+          {/* <SearchResults
+            addTrack={this.addTrack}
+            searchResults={this.state.searchResults}
+          /> */}
+          {this.displayPlaylist()}
+          {/* <PlayList
+            onExit={this.onExit}
+            onSave={
+              this.state.edit === 'create'
+                ? this.savePlaylist
+                : this.updatePlaylist
+            }
+            updateName={this.updatePlaylistName}
+            removeTrack={this.removeTrack}
+            playListName={this.state.playListName}
+            playListTracks={this.state.playListTracks}
+            edit={this.state.edit}
+            search={this.search}
+            addTrack={this.addTrack}
+            searchResults={this.state.searchResults}
+          /> */}
         </div>
       </div>
     );

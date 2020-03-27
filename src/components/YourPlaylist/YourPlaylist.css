@@ -1,31 +1,33 @@
 .YourPlaylist {
   position: relative;
-  margin: 1rem;
+  margin: 1rem 0.5rem;
   display: flex;
   flex-direction: column;
   overflow-y: scroll;
-  width: 45%;
-  flex-basis: 300px;
+  /* flex-basis: 300px; */
   max-height: 950px;
   padding: 0.8rem;
   background-color: rgba(1, 12, 63, 0.7);
-  flex-grow: 1;
+  /* flex-grow: 1; */
 }
 
 .Playlist-save {
   cursor: pointer;
-  width: 10rem;
-  padding: 0.77rem 0;
+  /* width: 10rem; */
+  padding: 0.77rem 1.5rem;
   border-radius: 54px;
   border-width: 0px;
   margin: 0 auto;
-  margin-top: 1.2rem;
   background-color: #6c41ec;
   text-align: center;
   font-size: 0.83rem;
   transition: background-color 0.25s;
   color: #fff;
   font-weight: 500;
+}
+
+.YourPlaylist .Playlist-save {
+  margin-top: 1rem;
 }
 
 .Playlist-save:hover {

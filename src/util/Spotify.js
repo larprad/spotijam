@@ -111,7 +111,40 @@ export const Spotify = {
     }
   },
 
+  async getThisPlaylist(playlistId) {
+    try {
+      const response = await fetch(
+        `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
+        {
+          headers: {
+            Authorization: 'Bearer ' + accessToken,
+            'Content-Type': 'application/json'
+          },
+          method: 'GET',
+          mode: 'cors',
+          cache: 'default'
+        }
+      );
+      const responseJson = await response.json();
+      console.log(responseJson);
+      const tracks = responseJson.items.map(x => {
+        return {
+          name: x.track.name,
+          album: x.track.album.name,
+          artist: x.track.artists.map(x => x.name),
+          uri: x.track.uri,
+          id: x.track.id
+        };
+      });
+      console.log(tracks);
+      return tracks;
+    } catch (e) {
+      console.error(e);
+    }
+  },
+
   async savePlaylist(playlistName, tracksUris) {
+    console.log('save new playlist');
     console.log(`playlistName: ${playlistName}`);
     console.log('tracksUris');
     console.log(tracksUris);
@@ -150,6 +183,36 @@ export const Spotify = {
             body: JSON.stringify({ uris: tracksUris })
           }
         );
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  },
+
+  async editPlaylist(playlistId, tracksUris) {
+    console.log('edit playlist');
+    console.log(`playlist ID: ${playlistId}`);
+    console.log('tracksUris');
+    console.log(tracksUris);
+    if (!playlistId || !tracksUris) {
+      console.log('no args');
+    } else {
+      try {
+        const response = await fetch(
+          `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
+          {
+            headers: {
+              Authorization: 'Bearer ' + accessToken,
+              'Content-Type': 'application/json'
+            },
+            method: 'PUT',
+            mode: 'cors',
+            cache: 'default',
+            body: JSON.stringify({ uris: tracksUris })
+          }
+        );
+        console.log('edit response');
+        console.log(response);
       } catch (err) {
         console.log(err);
       }
