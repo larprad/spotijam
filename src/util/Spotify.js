@@ -14,10 +14,8 @@ const authEndpoint =
   'client_id=' +
   clientId +
   '&response_type=token' +
-  '&redirect_uri=http://localhost:3000&scope=' +
+  '&redirect_uri=https://larprad.github.io/spotijam&scope=' +
   scope;
-
-// http://imaginary-birth.surge.sh/&scope=
 
 export const Spotify = {
   // connected: false,
@@ -29,7 +27,7 @@ export const Spotify = {
       method: 'GET',
       headers: myHeaders,
       mode: 'cors',
-      cache: 'default'
+      cache: 'default',
     };
     return myInit;
   },
@@ -76,13 +74,13 @@ export const Spotify = {
         const response = await fetch(baseURL + track, myInit);
         if (response.ok) {
           const responseJson = await response.json();
-          const tracks = responseJson.tracks.items.map(x => {
+          const tracks = responseJson.tracks.items.map((x) => {
             return {
               name: x.name,
               album: x.album.name,
-              artist: x.artists.map(x => x.name),
+              artist: x.artists.map((x) => x.name),
               uri: x.uri,
-              id: x.id
+              id: x.id,
             };
           });
           return tracks;
@@ -113,27 +111,24 @@ export const Spotify = {
 
   async getThisPlaylist(playlistId) {
     try {
-      const response = await fetch(
-        `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
-        {
-          headers: {
-            Authorization: 'Bearer ' + accessToken,
-            'Content-Type': 'application/json'
-          },
-          method: 'GET',
-          mode: 'cors',
-          cache: 'default'
-        }
-      );
+      const response = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
+        headers: {
+          Authorization: 'Bearer ' + accessToken,
+          'Content-Type': 'application/json',
+        },
+        method: 'GET',
+        mode: 'cors',
+        cache: 'default',
+      });
       const responseJson = await response.json();
       console.log(responseJson);
-      const tracks = responseJson.items.map(x => {
+      const tracks = responseJson.items.map((x) => {
         return {
           name: x.track.name,
           album: x.track.album.name,
-          artist: x.track.artists.map(x => x.name),
+          artist: x.track.artists.map((x) => x.name),
           uri: x.track.uri,
-          id: x.track.id
+          id: x.track.id,
         };
       });
       console.log(tracks);
@@ -158,31 +153,28 @@ export const Spotify = {
           {
             headers: {
               Authorization: 'Bearer ' + accessToken,
-              'Content-Type': 'application/json'
+              'Content-Type': 'application/json',
             },
             method: 'POST',
             mode: 'cors',
             cache: 'default',
-            body: JSON.stringify({ name: playlistName })
+            body: JSON.stringify({ name: playlistName }),
           }
         );
         const responseJson = await idResponse.json();
         const playlistID = responseJson.id;
         console.log('playlist ID');
         console.log(playlistID);
-        await fetch(
-          `https://api.spotify.com/v1/playlists/${playlistID}/tracks`,
-          {
-            headers: {
-              Authorization: 'Bearer ' + accessToken,
-              'Content-Type': 'application/json'
-            },
-            method: 'POST',
-            mode: 'cors',
-            cache: 'default',
-            body: JSON.stringify({ uris: tracksUris })
-          }
-        );
+        await fetch(`https://api.spotify.com/v1/playlists/${playlistID}/tracks`, {
+          headers: {
+            Authorization: 'Bearer ' + accessToken,
+            'Content-Type': 'application/json',
+          },
+          method: 'POST',
+          mode: 'cors',
+          cache: 'default',
+          body: JSON.stringify({ uris: tracksUris }),
+        });
       } catch (err) {
         console.log(err);
       }
@@ -198,19 +190,16 @@ export const Spotify = {
       console.log('no args');
     } else {
       try {
-        const response = await fetch(
-          `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
-          {
-            headers: {
-              Authorization: 'Bearer ' + accessToken,
-              'Content-Type': 'application/json'
-            },
-            method: 'PUT',
-            mode: 'cors',
-            cache: 'default',
-            body: JSON.stringify({ uris: tracksUris })
-          }
-        );
+        const response = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
+          headers: {
+            Authorization: 'Bearer ' + accessToken,
+            'Content-Type': 'application/json',
+          },
+          method: 'PUT',
+          mode: 'cors',
+          cache: 'default',
+          body: JSON.stringify({ uris: tracksUris }),
+        });
         console.log('edit response');
         console.log(response);
       } catch (err) {
@@ -221,20 +210,15 @@ export const Spotify = {
 
   async deletePlayList(playlistId) {
     try {
-      const response = await fetch(
-        `https://api.spotify.com/v1/playlists/${playlistId}/followers`,
-        {
-          method: 'DELETE',
-          headers: { Authorization: 'Bearer ' + accessToken },
-          mode: 'cors',
-          cache: 'default'
-        }
-      );
-      response.ok
-        ? console.log('delete success')
-        : console.log('potato in the sauasage');
+      const response = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/followers`, {
+        method: 'DELETE',
+        headers: { Authorization: 'Bearer ' + accessToken },
+        mode: 'cors',
+        cache: 'default',
+      });
+      response.ok ? console.log('delete success') : console.log('potato in the sauasage');
     } catch (e) {
       console.log(e);
     }
-  }
+  },
 };
